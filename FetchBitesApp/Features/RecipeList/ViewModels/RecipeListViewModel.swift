@@ -36,6 +36,7 @@ final class RecipeListViewModel: ObservableObject {
         }
     }
 
+    @MainActor
     func fetchRecipes() async {
         state = .loading
 
@@ -45,10 +46,8 @@ final class RecipeListViewModel: ObservableObject {
             if fetchedRecipes.isEmpty {
                 state = .empty
             } else {
-                await MainActor.run {
-                    recipes = fetchedRecipes
-                    state = .loaded
-                }
+                recipes = fetchedRecipes
+                state = .loaded
             }
         } catch {
             state = .error(error)
@@ -60,13 +59,24 @@ final class RecipeListViewModel: ObservableObject {
 // MARK: - Repository Implementation
 class RecipeRepositoryImpl: RecipeRepository {
     private let networkClient: NetworkClient
+    private let endpoint: NetworkClient.Endpoint
 
     init(networkClient: NetworkClient = NetworkClient()) {
         self.networkClient = networkClient
+
+        if let endpointType = ProcessInfo.processInfo.environment["USE_ENDPOINT"] {
+            switch endpointType {
+            case "malformed": self.endpoint = .malformedRecipes
+            case "empty": self.endpoint = .emptyRecipes
+            default: self.endpoint = .recipes
+            }
+        } else {
+            self.endpoint = .recipes
+        }
     }
 
     func fetchRecipes() async throws -> [Recipe] {
-        let data = try await networkClient.fetch(endpoint: .recipes)
+        let data = try await networkClient.fetch(endpoint: endpoint)
         let response = try JSONDecoder().decode(RecipeResponse.self, from: data)
         return response.recipes
     }
