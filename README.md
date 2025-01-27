@@ -3,7 +3,9 @@
 ### Summary
 FetchBites is an iOS recipe browsing application built with SwiftUI that showcases modern iOS development practices. The app provides a seamless experience for browsing recipes, with features including:
 
-[Insert screenshots/video showing:]
+[![FetchBites Demo]](https://github.com/user-attachments/assets/222a9fef-46fa-4f4d-af62-a526eb940a0b)
+
+
 - Main recipe list with custom-designed cards
 - Full-screen image viewing capability
 - Error state handling
