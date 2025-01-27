@@ -95,13 +95,6 @@ struct ShimmerEffect: ViewModifier {
     }
 }
 
-// MARK: - View Extension
-extension View {
-    func shimmer(isActive: Bool) -> some View {
-        modifier(ShimmerEffect(isActive: isActive))
-    }
-}
-
 // MARK: - Loading Recipe List View
 struct LoadingRecipeListView: View {
     var body: some View {

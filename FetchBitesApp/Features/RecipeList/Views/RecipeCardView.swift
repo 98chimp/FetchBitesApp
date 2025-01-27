@@ -59,6 +59,7 @@ struct RecipeCardView: View {
                     }
 
                     Spacer()
+
                     if let videoURL = recipe.youtubeURL {
                         Button {
                             onTapVideo(videoURL)
@@ -68,7 +69,6 @@ struct RecipeCardView: View {
                                 .foregroundColor(Theme.Colors.primary)
                         }
                     }
-
                 }
             }
             .padding(.horizontal, Theme.Padding.small)
